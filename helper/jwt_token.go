@@ -8,7 +8,7 @@ import (
 
 func CreateTokenAdmin(id int, username, secret string) (string, error) {
 	claims := jwt.MapClaims{}
-	claims["exp"] = time.Now().Add((24 * time.Hour)).Unix()
+	claims["exp"] = time.Now().Add((2 * time.Hour)).Unix()
 	claims["username"] = username
 	claims["id"] = id
 
