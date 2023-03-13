@@ -1,15 +1,17 @@
 package main
 
 import (
-	"net/http"
+	conf "github.com/arifwidiasan/api-taut/config"
+	handler "github.com/arifwidiasan/api-taut/controller/handler"
 
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
+	config := conf.InitConfiguration()
 	e := echo.New()
-	e.GET("/test", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World! test")
-	})
-	e.Logger.Fatal(e.Start(":1323"))
+
+	handler.RegisterGroupAPI(e, config)
+
+	e.Logger.Fatal(e.Start((config.SERVER_ADDRESS)))
 }
