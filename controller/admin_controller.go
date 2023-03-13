@@ -34,3 +34,24 @@ func (ce *EchoController) LoginAdminController(c echo.Context) error {
 		"token":    token,
 	}, "  ")
 }
+
+func (ce *EchoController) ChangePassAdminController(c echo.Context) error {
+	adminPass := model.AdminChangePass{}
+
+	if err := c.Bind(&adminPass); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	err := ce.Svc.ChangePassAdminService(adminPass.OldPass, adminPass.NewPass)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success change password admin",
+	})
+}

@@ -13,3 +13,8 @@ type AdminLogin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+type AdminChangePass struct {
+	OldPass string `json:"old_password" form:"old_password"`
+	NewPass string `json:"new_password" form:"new_password"`
+}
