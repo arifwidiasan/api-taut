@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/arifwidiasan/api-taut/model"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -44,7 +45,9 @@ func (ce *EchoController) ChangePassAdminController(c echo.Context) error {
 		})
 	}
 
-	err := ce.Svc.ChangePassAdminService(adminPass.OldPass, adminPass.NewPass)
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+
+	err := ce.Svc.ChangePassAdminService(username, adminPass.OldPass, adminPass.NewPass)
 	if err != nil {
 		return c.JSON(500, map[string]interface{}{
 			"messages": err.Error(),

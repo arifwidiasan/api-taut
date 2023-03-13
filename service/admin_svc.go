@@ -27,8 +27,8 @@ func (s *svc) LoginAdmin(username, password string) (string, int) {
 	return token, http.StatusOK
 }
 
-func (s *svc) ChangePassAdminService(oldpass, newpass string) error {
-	admin, err := s.repo.GetAdminByUsername("admin")
+func (s *svc) ChangePassAdminService(username, oldpass, newpass string) error {
+	admin, err := s.repo.GetAdminByUsername(username)
 	if err != nil {
 		return fmt.Errorf("admin not found")
 	}
