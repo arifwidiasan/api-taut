@@ -76,3 +76,14 @@ func (s *svc) GetAllAdminService() []model.Admin {
 func (s *svc) GetAdminByIDService(id int) (model.Admin, error) {
 	return s.repo.GetAdminByID(id)
 }
+
+func (s *svc) UpdateAdminByIDService(id int, admin model.Admin) error {
+	if admin.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("error generate password")
+		}
+		admin.Password = string(hash)
+	}
+	return s.repo.UpdateAdminByID(id, admin)
+}

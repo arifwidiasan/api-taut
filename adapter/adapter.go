@@ -22,4 +22,5 @@ type AdapterService interface {
 	GetAdminByUsernameService(username string) (model.Admin, error)
 	GetAllAdminService() []model.Admin
 	GetAdminByIDService(id int) (model.Admin, error)
+	UpdateAdminByIDService(id int, admin model.Admin) error
 }
