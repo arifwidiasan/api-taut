@@ -61,6 +61,13 @@ func (ce *EchoController) ChangePassAdminController(c echo.Context) error {
 
 func (ce *EchoController) CreateAdminController(c echo.Context) error {
 	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
 	if username != "admin" {
 		return c.JSON(403, map[string]interface{}{
 			"messages": "forbidden, not master admin",
@@ -75,7 +82,7 @@ func (ce *EchoController) CreateAdminController(c echo.Context) error {
 		})
 	}
 
-	err := ce.Svc.CreateAdminService(admin)
+	err = ce.Svc.CreateAdminService(admin)
 	if err != nil {
 		return c.JSON(500, map[string]interface{}{
 			"messages": err.Error(),
@@ -84,5 +91,22 @@ func (ce *EchoController) CreateAdminController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success create admin " + username,
+	})
+}
+
+func (ce *EchoController) GetAllAdminController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	admins := ce.Svc.GetAllAdminService()
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get all admin",
+		"data":     admins,
 	})
 }

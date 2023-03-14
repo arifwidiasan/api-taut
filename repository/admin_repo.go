@@ -32,3 +32,10 @@ func (r *repositoryMysqlLayer) CreateAdmin(admin model.Admin) error {
 
 	return nil
 }
+
+func (r *repositoryMysqlLayer) GetAllAdmin() []model.Admin {
+	admins := []model.Admin{}
+	r.DB.Find(&admins)
+
+	return admins
+}

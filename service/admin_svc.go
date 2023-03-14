@@ -65,6 +65,10 @@ func (s *svc) CreateAdminService(admin model.Admin) error {
 	return s.repo.CreateAdmin(admin)
 }
 
-func (s *svc) GetAdminByUsernammeService(username string) (model.Admin, error) {
+func (s *svc) GetAdminByUsernameService(username string) (model.Admin, error) {
 	return s.repo.GetAdminByUsername(username)
+}
+
+func (s *svc) GetAllAdminService() []model.Admin {
+	return s.repo.GetAllAdmin()
 }
