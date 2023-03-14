@@ -48,3 +48,12 @@ func (r *repositoryMysqlLayer) GetAdminByID(id int) (admin model.Admin, err erro
 
 	return
 }
+
+func (r *repositoryMysqlLayer) DeleteAdminByID(id int) error {
+	res := r.DB.Unscoped().Delete(&model.Admin{}, id)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error delete admin, id admin not found")
+	}
+
+	return nil
+}

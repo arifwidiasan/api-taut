@@ -125,7 +125,7 @@ func (ce *EchoController) GetAdminByIDController(c echo.Context) error {
 	id_int, _ := strconv.Atoi(id)
 	admin, err := ce.Svc.GetAdminByIDService(id_int)
 	if err != nil {
-		return c.JSON(500, map[string]interface{}{
+		return c.JSON(404, map[string]interface{}{
 			"messages": err.Error(),
 		})
 	}
@@ -170,5 +170,34 @@ func (ce *EchoController) UpdateAdminController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success update admin",
+	})
+}
+
+func (ce *EchoController) DeleteAdminController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	if username != "admin" {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not master admin",
+		})
+	}
+
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+	err = ce.Svc.DeleteAdminByIDService(id_int)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success delete admin",
 	})
 }

@@ -87,3 +87,12 @@ func (s *svc) UpdateAdminByIDService(id int, admin model.Admin) error {
 	}
 	return s.repo.UpdateAdminByID(id, admin)
 }
+
+func (s *svc) DeleteAdminByIDService(id int) error {
+	admin, _ := s.repo.GetAdminByID(id)
+	if admin.Username == "admin" {
+		return fmt.Errorf("master admin cannot be deleted")
+	}
+
+	return s.repo.DeleteAdminByID(id)
+}
