@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/arifwidiasan/api-taut/helper"
+	"github.com/arifwidiasan/api-taut/model"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -47,4 +48,51 @@ func (s *svc) ChangePassAdminService(username, oldpass, newpass string) error {
 	}
 
 	return nil
+}
+
+func (s *svc) CreateAdminService(admin model.Admin) error {
+	if admin.Username == "" || admin.Password == "" {
+		return fmt.Errorf("username or password is empty")
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("error generate password")
+	}
+
+	admin.Password = string(hash)
+
+	return s.repo.CreateAdmin(admin)
+}
+
+func (s *svc) GetAdminByUsernameService(username string) (model.Admin, error) {
+	return s.repo.GetAdminByUsername(username)
+}
+
+func (s *svc) GetAllAdminService() []model.Admin {
+	return s.repo.GetAllAdmin()
+}
+
+func (s *svc) GetAdminByIDService(id int) (model.Admin, error) {
+	return s.repo.GetAdminByID(id)
+}
+
+func (s *svc) UpdateAdminByIDService(id int, admin model.Admin) error {
+	if admin.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("error generate password")
+		}
+		admin.Password = string(hash)
+	}
+	return s.repo.UpdateAdminByID(id, admin)
+}
+
+func (s *svc) DeleteAdminByIDService(id int) error {
+	admin, _ := s.repo.GetAdminByID(id)
+	if admin.Username == "admin" {
+		return fmt.Errorf("master admin cannot be deleted")
+	}
+
+	return s.repo.DeleteAdminByID(id)
 }
