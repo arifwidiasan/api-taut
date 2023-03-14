@@ -26,12 +26,12 @@ func (ce *EchoController) LoginAdminController(c echo.Context) error {
 
 	case http.StatusInternalServerError:
 		return c.JSONPretty(http.StatusInternalServerError, map[string]interface{}{
-			"messages": "internal",
+			"messages": "internal, error create token",
 		}, "  ")
 	}
 
 	return c.JSONPretty(http.StatusOK, map[string]interface{}{
-		"messages": "success",
+		"messages": "success login as " + adminLogin.Username,
 		"token":    token,
 	}, "  ")
 }
@@ -55,6 +55,34 @@ func (ce *EchoController) ChangePassAdminController(c echo.Context) error {
 	}
 
 	return c.JSON(200, map[string]interface{}{
-		"messages": "success change password admin",
+		"messages": "success change password admin " + username,
+	})
+}
+
+func (ce *EchoController) CreateAdminController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	if username != "admin" {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not master admin",
+		})
+	}
+
+	admin := model.Admin{}
+
+	if err := c.Bind(&admin); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	err := ce.Svc.CreateAdminService(admin)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success create admin " + username,
 	})
 }

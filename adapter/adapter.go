@@ -8,6 +8,7 @@ import (
 type AdapterRepository interface {
 	GetAdminByUsername(username string) (admin model.Admin, err error)
 	UpdateAdminByID(id int, admin model.Admin) error
+	CreateAdmin(admin model.Admin) error
 }
 
 type AdapterService interface {
@@ -15,4 +16,6 @@ type AdapterService interface {
 
 	LoginAdmin(username, password string) (string, int)
 	ChangePassAdminService(username, oldpass, newpass string) error
+	CreateAdminService(admin model.Admin) error
+	GetAdminByUsernammeService(username string) (model.Admin, error)
 }

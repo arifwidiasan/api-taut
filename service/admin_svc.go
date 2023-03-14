@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/arifwidiasan/api-taut/helper"
+	"github.com/arifwidiasan/api-taut/model"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -47,4 +48,23 @@ func (s *svc) ChangePassAdminService(username, oldpass, newpass string) error {
 	}
 
 	return nil
+}
+
+func (s *svc) CreateAdminService(admin model.Admin) error {
+	if admin.Username == "" || admin.Password == "" {
+		return fmt.Errorf("username or password is empty")
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("error generate password")
+	}
+
+	admin.Password = string(hash)
+
+	return s.repo.CreateAdmin(admin)
+}
+
+func (s *svc) GetAdminByUsernammeService(username string) (model.Admin, error) {
+	return s.repo.GetAdminByUsername(username)
 }

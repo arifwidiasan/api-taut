@@ -23,3 +23,12 @@ func (r *repositoryMysqlLayer) UpdateAdminByID(id int, admin model.Admin) error 
 
 	return nil
 }
+
+func (r *repositoryMysqlLayer) CreateAdmin(admin model.Admin) error {
+	res := r.DB.Create(&admin)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error create admin, maybe username already exist")
+	}
+
+	return nil
+}
