@@ -72,3 +72,7 @@ func (s *svc) GetAdminByUsernameService(username string) (model.Admin, error) {
 func (s *svc) GetAllAdminService() []model.Admin {
 	return s.repo.GetAllAdmin()
 }
+
+func (s *svc) GetAdminByIDService(id int) (model.Admin, error) {
+	return s.repo.GetAdminByID(id)
+}

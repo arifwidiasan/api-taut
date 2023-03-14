@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/arifwidiasan/api-taut/model"
 	"github.com/golang-jwt/jwt"
@@ -108,5 +109,29 @@ func (ce *EchoController) GetAllAdminController(c echo.Context) error {
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success get all admin",
 		"data":     admins,
+	})
+}
+
+func (ce *EchoController) GetAdminByIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+	admin, err := ce.Svc.GetAdminByIDService(id_int)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get admin",
+		"data":     admin,
 	})
 }

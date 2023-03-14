@@ -39,3 +39,12 @@ func (r *repositoryMysqlLayer) GetAllAdmin() []model.Admin {
 
 	return admins
 }
+
+func (r *repositoryMysqlLayer) GetAdminByID(id int) (admin model.Admin, err error) {
+	res := r.DB.Where("id = ?", id).Find(&admin)
+	if res.RowsAffected < 1 {
+		err = fmt.Errorf("admin not found")
+	}
+
+	return
+}

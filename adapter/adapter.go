@@ -10,6 +10,7 @@ type AdapterRepository interface {
 	UpdateAdminByID(id int, admin model.Admin) error
 	CreateAdmin(admin model.Admin) error
 	GetAllAdmin() []model.Admin
+	GetAdminByID(id int) (admin model.Admin, err error)
 }
 
 type AdapterService interface {
@@ -20,4 +21,5 @@ type AdapterService interface {
 	CreateAdminService(admin model.Admin) error
 	GetAdminByUsernameService(username string) (model.Admin, error)
 	GetAllAdminService() []model.Admin
+	GetAdminByIDService(id int) (model.Admin, error)
 }
