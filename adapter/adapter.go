@@ -12,6 +12,13 @@ type AdapterRepository interface {
 	GetAllAdmin() []model.Admin
 	GetAdminByID(id int) (admin model.Admin, err error)
 	DeleteAdminByID(id int) error
+
+	CreateUser(user model.User) error
+	GetAllUser() []model.User
+	GetUserByID(id int) (user model.User, err error)
+	GetUserByUsername(username string) (user model.User, err error)
+	UpdateUserByID(id int, user model.User) error
+	DeleteUserByID(id int) error
 }
 
 type AdapterService interface {
@@ -25,4 +32,10 @@ type AdapterService interface {
 	GetAdminByIDService(id int) (model.Admin, error)
 	UpdateAdminByIDService(id int, admin model.Admin) error
 	DeleteAdminByIDService(id int) error
+
+	AdminCreateUserService(user model.User) error
+	AdminGetAllUserService() []model.User
+	AdminGetUserByIDService(id int) (model.User, error)
+	AdminUpdateUserByIDService(id int, user model.User) error
+	AdminDeleteUserByIDService(id int) error
 }

@@ -10,6 +10,7 @@ type Config struct {
 	DB_HOST        string
 	DB_NAME        string
 	JWT_KEY        string
+	LOC            string
 }
 
 func InitConfiguration() Config {
@@ -22,6 +23,7 @@ func InitConfiguration() Config {
 		DB_PORT:        GetOrDefault("DB_PORT", "3306"),
 		DB_HOST:        GetOrDefault("DB_HOST", "127.0.0.1"),
 		JWT_KEY:        GetOrDefault("JWT_KEY", "inikunci"),
+		LOC:            GetOrDefault("LOC", "Asia%2FJakarta"),
 	}
 }
 
