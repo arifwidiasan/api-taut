@@ -53,5 +53,6 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 	api.GET("/admins/users", cont.AdminGetAllUserController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	api.GET("/admins/users/:id", cont.AdminGetUserByIDController, middleware.JWT([]byte(conf.JWT_KEY)))
+	api.PUT("/admins/users/:id", cont.AdminUpdateUserByIDController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 }

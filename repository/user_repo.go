@@ -39,3 +39,12 @@ func (r *repositoryMysqlLayer) GetUserByUsername(username string) (user model.Us
 
 	return
 }
+
+func (r *repositoryMysqlLayer) UpdateUserByID(id int, user model.User) error {
+	res := r.DB.Where("id = ?", id).UpdateColumns(&user)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error update user, maybe updated username or email already exist")
+	}
+
+	return nil
+}

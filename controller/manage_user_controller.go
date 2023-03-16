@@ -76,3 +76,33 @@ func (ce *EchoController) AdminGetUserByIDController(c echo.Context) error {
 		"data":     user,
 	})
 }
+
+func (ce *EchoController) AdminUpdateUserByIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+	user := model.User{}
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	err = ce.Svc.AdminUpdateUserByIDService(id_int, user)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success update user",
+	})
+}

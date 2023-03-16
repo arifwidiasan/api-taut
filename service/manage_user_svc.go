@@ -36,3 +36,18 @@ func (s *svc) AdminGetAllUserService() []model.User {
 func (s *svc) AdminGetUserByIDService(id int) (model.User, error) {
 	return s.repo.GetUserByID(id)
 }
+func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
+	if user.Username != "" {
+		return fmt.Errorf("username cannot be changed")
+	}
+
+	if user.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return fmt.Errorf("error generate password")
+		}
+		user.Password = string(hash)
+	}
+
+	return s.repo.UpdateUserByID(id, user)
+}
