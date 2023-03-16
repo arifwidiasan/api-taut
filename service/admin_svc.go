@@ -57,6 +57,12 @@ func (s *svc) CreateAdminService(admin model.Admin) error {
 	}
 
 	admin.Username = strings.ToLower(admin.Username)
+
+	_, err := s.repo.GetUserByUsername(admin.Username)
+	if err == nil {
+		return fmt.Errorf("username already exist on admin or user")
+	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return fmt.Errorf("error generate password")
@@ -80,6 +86,10 @@ func (s *svc) GetAdminByIDService(id int) (model.Admin, error) {
 }
 
 func (s *svc) UpdateAdminByIDService(id int, admin model.Admin) error {
+	if admin.Username != "" {
+		return fmt.Errorf("username cannot be changed")
+	}
+
 	if admin.Password != "" {
 		hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
 		if err != nil {

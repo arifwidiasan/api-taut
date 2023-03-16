@@ -91,7 +91,7 @@ func (ce *EchoController) CreateAdminController(c echo.Context) error {
 	}
 
 	return c.JSON(200, map[string]interface{}{
-		"messages": "success create admin " + username,
+		"messages": "success create admin " + admin.Username,
 	})
 }
 
