@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/arifwidiasan/api-taut/helper"
 	"github.com/arifwidiasan/api-taut/model"
@@ -55,6 +56,7 @@ func (s *svc) CreateAdminService(admin model.Admin) error {
 		return fmt.Errorf("username or password is empty")
 	}
 
+	admin.Username = strings.ToLower(admin.Username)
 	hash, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return fmt.Errorf("error generate password")
