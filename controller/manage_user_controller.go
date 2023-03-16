@@ -106,3 +106,26 @@ func (ce *EchoController) AdminUpdateUserByIDController(c echo.Context) error {
 		"messages": "success update user",
 	})
 }
+
+func (ce *EchoController) AdminDeleteUserByIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+	err = ce.Svc.AdminDeleteUserByIDService(id_int)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success delete user",
+	})
+}

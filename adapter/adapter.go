@@ -18,6 +18,7 @@ type AdapterRepository interface {
 	GetUserByID(id int) (user model.User, err error)
 	GetUserByUsername(username string) (user model.User, err error)
 	UpdateUserByID(id int, user model.User) error
+	DeleteUserByID(id int) error
 }
 
 type AdapterService interface {
@@ -36,4 +37,5 @@ type AdapterService interface {
 	AdminGetAllUserService() []model.User
 	AdminGetUserByIDService(id int) (model.User, error)
 	AdminUpdateUserByIDService(id int, user model.User) error
+	AdminDeleteUserByIDService(id int) error
 }

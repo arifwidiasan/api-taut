@@ -36,6 +36,7 @@ func (s *svc) AdminGetAllUserService() []model.User {
 func (s *svc) AdminGetUserByIDService(id int) (model.User, error) {
 	return s.repo.GetUserByID(id)
 }
+
 func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
 	if user.Username != "" {
 		return fmt.Errorf("username cannot be changed")
@@ -50,4 +51,8 @@ func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
 	}
 
 	return s.repo.UpdateUserByID(id, user)
+}
+
+func (s *svc) AdminDeleteUserByIDService(id int) error {
+	return s.repo.DeleteUserByID(id)
 }

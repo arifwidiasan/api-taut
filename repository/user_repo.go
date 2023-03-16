@@ -48,3 +48,12 @@ func (r *repositoryMysqlLayer) UpdateUserByID(id int, user model.User) error {
 
 	return nil
 }
+
+func (r *repositoryMysqlLayer) DeleteUserByID(id int) error {
+	res := r.DB.Unscoped().Delete(&model.User{}, id)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error delete user, id user not found")
+	}
+
+	return nil
+}
