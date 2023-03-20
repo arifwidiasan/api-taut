@@ -34,7 +34,7 @@ func (s *svc) AdminCreateUserService(user model.User) error {
 	created_user, _ := s.repo.GetUserByUsername(user.Username)
 	sosmed := model.Sosmed{}
 	sosmed.UserID = created_user.ID
-	s.repo.CreateSosmed(sosmed)
+	_ = s.CreateSosmedService(sosmed)
 
 	return nil
 }
@@ -64,5 +64,7 @@ func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
 }
 
 func (s *svc) AdminDeleteUserByIDService(id int) error {
+	_ = s.DeleteSosmedByUserIDService(id)
+
 	return s.repo.DeleteUserByID(id)
 }
