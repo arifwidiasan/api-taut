@@ -57,6 +57,7 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 	api.DELETE("/admins/users/:id", cont.AdminDeleteUserByIDController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	api.POST("/users", cont.CreateUserController)
+	api.GET("/users", cont.GetUserByUsernameController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	api.POST("/users/login", cont.LoginUserController)
 
