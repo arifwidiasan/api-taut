@@ -84,3 +84,25 @@ func (s *svc) ChangePassUserService(username, oldpass, newpass string) error {
 
 	return nil
 }
+
+func (s *svc) UpdateUserByUsernameService(username string, user model.User) error {
+	if user.Username != "" {
+		return fmt.Errorf("username cannot be changed")
+	}
+
+	if user.Password != "" {
+		return fmt.Errorf("password cannot be changed from here")
+	}
+
+	id, err := s.repo.GetUserByUsername(username)
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdateUserByID(int(id.ID), user)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

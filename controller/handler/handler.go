@@ -58,6 +58,7 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 
 	api.POST("/users", cont.CreateUserController)
 	api.GET("/users", cont.GetUserByUsernameController, middleware.JWT([]byte(conf.JWT_KEY)))
+	api.PUT("/users", cont.UpdateUserByUsernameController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	api.POST("/users/login", cont.LoginUserController)
 	api.POST("/users/changepass", cont.ChangePassUserController, middleware.JWT([]byte(conf.JWT_KEY)))

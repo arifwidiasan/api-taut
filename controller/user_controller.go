@@ -88,3 +88,24 @@ func (ce *EchoController) ChangePassUserController(c echo.Context) error {
 		"messages": "success change password user " + username,
 	})
 }
+
+func (ce *EchoController) UpdateUserByUsernameController(c echo.Context) error {
+	user := model.User{}
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	err := ce.Svc.UpdateUserByUsernameService(username, user)
+	if err != nil {
+		return c.JSON(500, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success update user " + user.Username,
+	})
+}
