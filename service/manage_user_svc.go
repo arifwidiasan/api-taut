@@ -26,7 +26,17 @@ func (s *svc) AdminCreateUserService(user model.User) error {
 	}
 	user.Password = string(hash)
 
-	return s.repo.CreateUser(user)
+	err = s.repo.CreateUser(user)
+	if err != nil {
+		return err
+	}
+
+	created_user, _ := s.repo.GetUserByUsername(user.Username)
+	sosmed := model.Sosmed{}
+	sosmed.UserID = created_user.ID
+	s.repo.CreateSosmed(sosmed)
+
+	return nil
 }
 
 func (s *svc) AdminGetAllUserService() []model.User {
