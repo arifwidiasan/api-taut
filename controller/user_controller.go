@@ -24,3 +24,30 @@ func (ce *EchoController) CreateUserController(c echo.Context) error {
 		"messages": "success create user " + user.Username,
 	})
 }
+
+func (ce *EchoController) LoginUserController(c echo.Context) error {
+	userLogin := model.UserLogin{}
+	if err := c.Bind(&userLogin); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	token, statusCode := ce.Svc.LoginUserService(userLogin.Username, userLogin.Password)
+	switch statusCode {
+	case 401:
+		return c.JSON(401, map[string]interface{}{
+			"messages": "username atau password salah",
+		})
+
+	case 500:
+		return c.JSON(500, map[string]interface{}{
+			"messages": "internal, error create token",
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success login as " + userLogin.Username,
+		"token":    token,
+	})
+}

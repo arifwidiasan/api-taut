@@ -48,4 +48,5 @@ type AdapterService interface {
 	GetSosmedByUserIDService(user_id int) (model.Sosmed, error)
 
 	CreateUserService(user model.User) error
+	LoginUserService(username, password string) (string, int)
 }

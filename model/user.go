@@ -17,3 +17,8 @@ type User struct {
 	QrcodePathFile         string    `json:"qrcode_path_file"`
 	CreatedAt              time.Time `json:"created_at"`
 }
+
+type UserLogin struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

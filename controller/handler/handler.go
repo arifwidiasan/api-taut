@@ -58,4 +58,6 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 
 	api.POST("/users", cont.CreateUserController)
 
+	api.POST("/users/login", cont.LoginUserController)
+
 }

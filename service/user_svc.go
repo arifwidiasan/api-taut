@@ -2,8 +2,10 @@ package service
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
+	"github.com/arifwidiasan/api-taut/helper"
 	"github.com/arifwidiasan/api-taut/model"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -36,4 +38,23 @@ func (s *svc) CreateUserService(user model.User) error {
 	_ = s.CreateSosmedService(sosmed)
 
 	return nil
+}
+
+func (s *svc) LoginUserService(username, password string) (string, int) {
+	user, err := s.repo.GetUserByUsername(username)
+	if err != nil {
+		return "", http.StatusUnauthorized
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return "", http.StatusUnauthorized
+	}
+
+	token, err := helper.CreateTokenUser(int(user.ID), user.Username, s.c.JWT_KEY)
+	if err != nil {
+		return "", http.StatusInternalServerError
+	}
+
+	return token, http.StatusOK
 }
