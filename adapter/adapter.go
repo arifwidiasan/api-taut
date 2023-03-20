@@ -50,4 +50,5 @@ type AdapterService interface {
 	CreateUserService(user model.User) error
 	LoginUserService(username, password string) (string, int)
 	GetUserByUsernameService(username string) (model.User, error)
+	ChangePassUserService(username, oldpass, newpass string) error
 }

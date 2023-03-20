@@ -62,3 +62,25 @@ func (s *svc) LoginUserService(username, password string) (string, int) {
 func (s *svc) GetUserByUsernameService(username string) (model.User, error) {
 	return s.repo.GetUserByUsername(username)
 }
+
+func (s *svc) ChangePassUserService(username, oldpass, newpass string) error {
+	user, err := s.repo.GetUserByUsername(username)
+	if err != nil {
+		return fmt.Errorf("user not found")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(oldpass))
+	if err != nil {
+		return fmt.Errorf("old password not match")
+	}
+
+	hash, _ := bcrypt.GenerateFromPassword([]byte(newpass), bcrypt.DefaultCost)
+	user.Password = string(hash)
+
+	err = s.repo.UpdateUserByID(int(user.ID), user)
+	if err != nil {
+		return fmt.Errorf("error update password user")
+	}
+
+	return nil
+}
