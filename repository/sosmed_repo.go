@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/arifwidiasan/api-taut/model"
+	"gorm.io/gorm/clause"
 )
 
 func (r *repositoryMysqlLayer) CreateSosmed(sosmed model.Sosmed) error {
@@ -22,4 +23,13 @@ func (r *repositoryMysqlLayer) DeleteSosmedByUserID(user_id int) error {
 	}
 
 	return nil
+}
+
+func (r *repositoryMysqlLayer) GetSosmedByUserID(user_id int) (sosmed model.Sosmed, err error) {
+	res := r.DB.Where("user_id = ?", user_id).Preload(clause.Associations).Find(&sosmed)
+	if res.RowsAffected < 1 {
+		err = fmt.Errorf("sosmed not found")
+	}
+
+	return
 }
