@@ -71,9 +71,12 @@ func (ce *EchoController) AdminGetUserByIDController(c echo.Context) error {
 		})
 	}
 
+	sosmed, _ := ce.Svc.GetSosmedByUserIDService(id_int)
+
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success",
 		"data":     user,
+		"sosmed":   sosmed,
 	})
 }
 
