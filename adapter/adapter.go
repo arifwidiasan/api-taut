@@ -46,6 +46,7 @@ type AdapterService interface {
 	CreateSosmedService(sosmed model.Sosmed) error
 	DeleteSosmedByUserIDService(user_id int) error
 	GetSosmedByUserIDService(user_id int) (model.Sosmed, error)
+	GetSosmedByUsernameService(username string) (model.Sosmed, error)
 
 	CreateUserService(user model.User) error
 	LoginUserService(username, password string) (string, int)

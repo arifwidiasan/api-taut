@@ -15,3 +15,12 @@ func (s *svc) DeleteSosmedByUserIDService(user_id int) error {
 func (s *svc) GetSosmedByUserIDService(user_id int) (model.Sosmed, error) {
 	return s.repo.GetSosmedByUserID(user_id)
 }
+
+func (s *svc) GetSosmedByUsernameService(username string) (model.Sosmed, error) {
+	user, err := s.repo.GetUserByUsername(username)
+	if err != nil {
+		return model.Sosmed{}, err
+	}
+
+	return s.repo.GetSosmedByUserID(user.ID)
+}

@@ -106,6 +106,6 @@ func (ce *EchoController) UpdateUserByUsernameController(c echo.Context) error {
 	}
 
 	return c.JSON(200, map[string]interface{}{
-		"messages": "success update user " + user.Username,
+		"messages": "success update user " + username,
 	})
 }
