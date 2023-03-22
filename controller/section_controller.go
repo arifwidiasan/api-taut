@@ -26,3 +26,14 @@ func (ce *EchoController) CreateSectionController(c echo.Context) error {
 		"messages": "success create section",
 	})
 }
+
+func (ce *EchoController) GetAllSectionByUserIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+
+	sections := ce.Svc.GetAllSectionByUserIDService(username)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get all section from " + username,
+		"data":     sections,
+	})
+}

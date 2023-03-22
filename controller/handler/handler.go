@@ -67,5 +67,6 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 	api.PUT("/sosmeds", cont.UpdateSosmedByUsernameController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	api.POST("/sections", cont.CreateSectionController, middleware.JWT([]byte(conf.JWT_KEY)))
+	api.GET("/sections", cont.GetAllSectionByUserIDController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 }

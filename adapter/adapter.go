@@ -26,6 +26,7 @@ type AdapterRepository interface {
 	UpdateSosmedByUserID(id int, sosmed model.Sosmed) error
 
 	CreateSection(section model.Section) error
+	GetAllSectionByUserID(id int) []model.Section
 }
 
 type AdapterService interface {
@@ -59,4 +60,5 @@ type AdapterService interface {
 	UpdateUserByUsernameService(username string, user model.User) error
 
 	CreateSectionService(username string, section model.Section) error
+	GetAllSectionByUserIDService(username string) []model.Section
 }

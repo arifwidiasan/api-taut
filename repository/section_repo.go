@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/arifwidiasan/api-taut/model"
+	"gorm.io/gorm/clause"
 )
 
 func (r *repositoryMysqlLayer) CreateSection(section model.Section) error {
@@ -13,4 +14,11 @@ func (r *repositoryMysqlLayer) CreateSection(section model.Section) error {
 	}
 
 	return nil
+}
+
+func (r *repositoryMysqlLayer) GetAllSectionByUserID(id int) []model.Section {
+	sections := []model.Section{}
+	r.DB.Where("user_id = ?", id).Preload(clause.Associations).Find(&sections)
+
+	return sections
 }
