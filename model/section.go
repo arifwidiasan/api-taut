@@ -10,4 +10,6 @@ type Section struct {
 	Description string    `gorm:"not null" json:"description"`
 	Link        string    `json:"link"`
 	CreatedAt   time.Time `json:"created_at"`
+	UserID      int       `json:"user_id"`
+	User        User      `json:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
