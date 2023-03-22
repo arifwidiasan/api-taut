@@ -23,6 +23,7 @@ type AdapterRepository interface {
 	CreateSosmed(sosmed model.Sosmed) error
 	DeleteSosmedByUserID(user_id int) error
 	GetSosmedByUserID(user_id int) (sosmed model.Sosmed, err error)
+	UpdateSosmedByUserID(id int, sosmed model.Sosmed) error
 }
 
 type AdapterService interface {
@@ -46,4 +47,12 @@ type AdapterService interface {
 	CreateSosmedService(sosmed model.Sosmed) error
 	DeleteSosmedByUserIDService(user_id int) error
 	GetSosmedByUserIDService(user_id int) (model.Sosmed, error)
+	GetSosmedByUsernameService(username string) (model.Sosmed, error)
+	UpdateSosmedByUsernameService(username string, sosmed model.Sosmed) error
+
+	CreateUserService(user model.User) error
+	LoginUserService(username, password string) (string, int)
+	GetUserByUsernameService(username string) (model.User, error)
+	ChangePassUserService(username, oldpass, newpass string) error
+	UpdateUserByUsernameService(username string, user model.User) error
 }

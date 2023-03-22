@@ -33,3 +33,12 @@ func (r *repositoryMysqlLayer) GetSosmedByUserID(user_id int) (sosmed model.Sosm
 
 	return
 }
+
+func (r *repositoryMysqlLayer) UpdateSosmedByUserID(id int, sosmed model.Sosmed) error {
+	res := r.DB.Where("user_id = ?", id).UpdateColumns(&sosmed)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error update sosmed, no input or user id not found")
+	}
+
+	return nil
+}
