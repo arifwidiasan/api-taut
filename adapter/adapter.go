@@ -29,6 +29,7 @@ type AdapterRepository interface {
 	GetAllSectionByUserID(id int) []model.Section
 	GetOneSectionByUserIDandID(id, user_id int) (section model.Section, err error)
 	UpdateSectionByUserIDandID(id int, user_id int, section model.Section) error
+	DeleteSectionByUserIDandID(id int, user_id int) error
 }
 
 type AdapterService interface {
@@ -65,4 +66,5 @@ type AdapterService interface {
 	GetAllSectionByUserIDService(username string) []model.Section
 	GetOneSectionByUserIDandIDService(username string, id int) (model.Section, error)
 	UpdateSectionByUserIDandIDService(username string, id int, section model.Section) error
+	DeleteSectionByUserIDandIDService(username string, id int) error
 }

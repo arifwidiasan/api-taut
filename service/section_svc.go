@@ -51,3 +51,12 @@ func (s *svc) UpdateSectionByUserIDandIDService(username string, id int, section
 
 	return s.repo.UpdateSectionByUserIDandID(id, user.ID, section)
 }
+
+func (s *svc) DeleteSectionByUserIDandIDService(username string, id int) error {
+	user, err := s.GetUserByUsernameService(username)
+	if err != nil {
+		return err
+	}
+
+	return s.repo.DeleteSectionByUserIDandID(id, user.ID)
+}

@@ -81,3 +81,20 @@ func (ce *EchoController) UpdateSectionByUserIDandIDController(c echo.Context) e
 		"messages": "success update section from " + username,
 	})
 }
+
+func (ce *EchoController) DeleteSectionByUserIDandIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+
+	err := ce.Svc.DeleteSectionByUserIDandIDService(username, id_int)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success delete section from " + username,
+	})
+}

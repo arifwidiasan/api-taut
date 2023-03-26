@@ -40,3 +40,12 @@ func (r *repositoryMysqlLayer) UpdateSectionByUserIDandID(id int, user_id int, s
 
 	return nil
 }
+
+func (r *repositoryMysqlLayer) DeleteSectionByUserIDandID(id, user_id int) error {
+	res := r.DB.Unscoped().Where("id = ? AND user_id = ?", id, user_id).Delete(&model.Section{})
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("section not found or dont have access to this section")
+	}
+
+	return nil
+}
