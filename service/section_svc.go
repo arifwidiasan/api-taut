@@ -38,3 +38,16 @@ func (s *svc) GetOneSectionByUserIDandIDService(username string, id int) (model.
 
 	return s.repo.GetOneSectionByUserIDandID(id, user.ID)
 }
+
+func (s *svc) UpdateSectionByUserIDandIDService(username string, id int, section model.Section) error {
+	if section.UserID != 0 {
+		return fmt.Errorf("input user id not allowed")
+	}
+
+	user, err := s.GetUserByUsernameService(username)
+	if err != nil {
+		return err
+	}
+
+	return s.repo.UpdateSectionByUserIDandID(id, user.ID, section)
+}

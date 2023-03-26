@@ -57,3 +57,27 @@ func (ce *EchoController) GetOneSectionByUserIDandIDController(c echo.Context) e
 		"data":     section,
 	})
 }
+
+func (ce *EchoController) UpdateSectionByUserIDandIDController(c echo.Context) error {
+	section := model.Section{}
+	if err := c.Bind(&section); err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+
+	err := ce.Svc.UpdateSectionByUserIDandIDService(username, id_int, section)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success update section from " + username,
+	})
+}

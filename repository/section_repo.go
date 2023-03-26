@@ -31,3 +31,12 @@ func (r *repositoryMysqlLayer) GetOneSectionByUserIDandID(id, user_id int) (sect
 
 	return
 }
+
+func (r *repositoryMysqlLayer) UpdateSectionByUserIDandID(id int, user_id int, section model.Section) error {
+	res := r.DB.Where("id = ? AND user_id = ?", id, user_id).UpdateColumns(section)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("section not found or dont have access to this section or no change")
+	}
+
+	return nil
+}
