@@ -103,6 +103,11 @@ func (ce *EchoController) GetAllSectionByParamUsernameController(c echo.Context)
 	username := c.Param("username")
 
 	sections := ce.Svc.GetAllSectionByUserIDService(username)
+	if sections == nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "user not found",
+		})
+	}
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success get all section from " + username,
