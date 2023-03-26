@@ -65,6 +65,7 @@ func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
 
 func (s *svc) AdminDeleteUserByIDService(id int) error {
 	_ = s.DeleteSosmedByUserIDService(id)
+	_ = s.DeleteAllSectionByUserIDService(id)
 
 	return s.repo.DeleteUserByID(id)
 }

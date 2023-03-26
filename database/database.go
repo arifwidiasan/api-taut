@@ -38,6 +38,6 @@ func InitDB(conf config.Config) *gorm.DB {
 		})
 	}
 
-	DB.AutoMigrate(&model.Admin{}, &model.User{}, &model.Sosmed{})
+	DB.AutoMigrate(&model.Admin{}, &model.User{}, &model.Sosmed{}, &model.Section{})
 	return DB
 }
