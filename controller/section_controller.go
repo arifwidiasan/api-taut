@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"strconv"
+
 	"github.com/arifwidiasan/api-taut/model"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -35,5 +37,23 @@ func (ce *EchoController) GetAllSectionByUserIDController(c echo.Context) error 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success get all section from " + username,
 		"data":     sections,
+	})
+}
+
+func (ce *EchoController) GetOneSectionByUserIDandIDController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	id := c.Param("id")
+	id_int, _ := strconv.Atoi(id)
+
+	section, err := ce.Svc.GetOneSectionByUserIDandIDService(username, id_int)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get section from " + username,
+		"data":     section,
 	})
 }

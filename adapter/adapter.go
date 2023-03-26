@@ -27,6 +27,7 @@ type AdapterRepository interface {
 
 	CreateSection(section model.Section) error
 	GetAllSectionByUserID(id int) []model.Section
+	GetOneSectionByUserIDandID(id, user_id int) (section model.Section, err error)
 }
 
 type AdapterService interface {
@@ -61,4 +62,5 @@ type AdapterService interface {
 
 	CreateSectionService(username string, section model.Section) error
 	GetAllSectionByUserIDService(username string) []model.Section
+	GetOneSectionByUserIDandIDService(username string, id int) (model.Section, error)
 }

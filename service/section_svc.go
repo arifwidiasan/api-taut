@@ -29,3 +29,12 @@ func (s *svc) GetAllSectionByUserIDService(username string) []model.Section {
 
 	return s.repo.GetAllSectionByUserID(user.ID)
 }
+
+func (s *svc) GetOneSectionByUserIDandIDService(username string, id int) (model.Section, error) {
+	user, err := s.GetUserByUsernameService(username)
+	if err != nil {
+		return model.Section{}, err
+	}
+
+	return s.repo.GetOneSectionByUserIDandID(id, user.ID)
+}

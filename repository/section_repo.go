@@ -22,3 +22,12 @@ func (r *repositoryMysqlLayer) GetAllSectionByUserID(id int) []model.Section {
 
 	return sections
 }
+
+func (r *repositoryMysqlLayer) GetOneSectionByUserIDandID(id, user_id int) (section model.Section, err error) {
+	res := r.DB.Where("id = ? AND user_id = ?", id, user_id).Preload(clause.Associations).Find(&section)
+	if res.RowsAffected < 1 {
+		err = fmt.Errorf("section not found or dont have access to this section")
+	}
+
+	return
+}
