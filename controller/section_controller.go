@@ -98,3 +98,14 @@ func (ce *EchoController) DeleteSectionByUserIDandIDController(c echo.Context) e
 		"messages": "success delete section from " + username,
 	})
 }
+
+func (ce *EchoController) GetAllSectionByParamUsernameController(c echo.Context) error {
+	username := c.Param("username")
+
+	sections := ce.Svc.GetAllSectionByUserIDService(username)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get all section from " + username,
+		"data":     sections,
+	})
+}

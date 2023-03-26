@@ -109,3 +109,18 @@ func (ce *EchoController) UpdateUserByUsernameController(c echo.Context) error {
 		"messages": "success update user " + username,
 	})
 }
+
+func (ce *EchoController) GetUserByParamUsernameController(c echo.Context) error {
+	username := c.Param("username")
+	user, err := ce.Svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get user " + username,
+		"data":     user,
+	})
+}

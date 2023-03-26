@@ -41,3 +41,18 @@ func (ce *EchoController) UpdateSosmedByUsernameController(c echo.Context) error
 		"messages": "success update sosmed " + username,
 	})
 }
+
+func (ce *EchoController) GetSosmedByParamUsernameController(c echo.Context) error {
+	username := c.Param("username")
+	sosmed, err := ce.Svc.GetSosmedByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success get sosmed " + username,
+		"data":     sosmed,
+	})
+}
