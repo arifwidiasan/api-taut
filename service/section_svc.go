@@ -60,3 +60,7 @@ func (s *svc) DeleteSectionByUserIDandIDService(username string, id int) error {
 
 	return s.repo.DeleteSectionByUserIDandID(id, user.ID)
 }
+
+func (s *svc) DeleteAllSectionByUserIDService(user_id int) error {
+	return s.repo.DeleteAllSectionByUserID(user_id)
+}
