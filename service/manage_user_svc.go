@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/arifwidiasan/api-taut/helper"
@@ -72,6 +73,10 @@ func (s *svc) AdminUpdateUserByIDService(id int, user model.User) error {
 func (s *svc) AdminDeleteUserByIDService(id int) error {
 	_ = s.DeleteSosmedByUserIDService(id)
 	_ = s.DeleteAllSectionByUserIDService(id)
+
+	user, _ := s.repo.GetUserByID(id)
+	_ = os.Remove("../uploads/qrcode/" + user.Username + ".png")
+	_ = os.Remove("../uploads/profile-picture/" + user.Username + ".png")
 
 	return s.repo.DeleteUserByID(id)
 }
