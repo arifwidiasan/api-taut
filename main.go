@@ -11,6 +11,7 @@ import (
 func main() {
 	helper.CreateFolder("../uploads")
 	helper.CreateFolder("../uploads/profile-picture")
+	helper.CreateFolder("../uploads/qrcode")
 	config := conf.InitConfiguration()
 	e := echo.New()
 

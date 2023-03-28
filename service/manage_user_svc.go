@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/arifwidiasan/api-taut/helper"
 	"github.com/arifwidiasan/api-taut/model"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -25,6 +26,11 @@ func (s *svc) AdminCreateUserService(user model.User) error {
 		return fmt.Errorf("error generate password")
 	}
 	user.Password = string(hash)
+
+	user.QrcodePathFile, err = helper.GenerateQRCode(user.Username)
+	if err != nil {
+		return fmt.Errorf("error generate qrcode")
+	}
 
 	err = s.repo.CreateUser(user)
 	if err != nil {

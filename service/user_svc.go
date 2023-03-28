@@ -25,8 +25,13 @@ func (s *svc) CreateUserService(user model.User) error {
 	if err != nil {
 		return fmt.Errorf("error generate password")
 	}
-
 	user.Password = string(hash)
+
+	user.QrcodePathFile, err = helper.GenerateQRCode(user.Username)
+	if err != nil {
+		return fmt.Errorf("error generate qrcode")
+	}
+
 	err = s.repo.CreateUser(user)
 	if err != nil {
 		return err
