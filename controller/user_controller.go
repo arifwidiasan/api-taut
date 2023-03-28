@@ -1,6 +1,11 @@
 package controller
 
 import (
+	"io"
+	"net/http"
+	"os"
+	"strings"
+
 	"github.com/arifwidiasan/api-taut/model"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -122,5 +127,75 @@ func (ce *EchoController) GetUserByParamUsernameController(c echo.Context) error
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success get user " + username,
 		"data":     user,
+	})
+}
+
+func (ce *EchoController) UploadProfilePictureController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	file, err := c.FormFile("file")
+	if err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	src, err := file.Open()
+	if err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "error open file",
+		})
+	}
+
+	if file.Size >= 2200000 {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "max file is 2 MB",
+		})
+	}
+
+	filebyte, _ := io.ReadAll(src)
+	filetype := http.DetectContentType(filebyte)
+	if !strings.Contains(filetype, "image") {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "file is not image",
+		})
+	}
+
+	defer src.Close()
+
+	user := model.User{}
+	filename := username + ".png" //+ strings.SplitAfter(filetype, "/")[1]
+	user.ProfilePicturePathFile = filename
+
+	err = os.WriteFile("../uploads/profile-picture/"+filename, filebyte, 0777)
+	if err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "error write file",
+		})
+	}
+
+	_ = ce.Svc.UpdateUserByUsernameService(username, user)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success upload profile picture user " + username,
+	})
+}
+
+func (ce *EchoController) DeleteProfilePictureController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+
+	err := os.Remove("../uploads/profile-picture/" + username + ".png")
+	if err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "error delete file",
+		})
+	}
+
+	user := model.User{}
+	user.ProfilePicturePathFile = " "
+
+	_ = ce.Svc.UpdateUserByUsernameService(username, user)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success delete profile picture user " + username,
 	})
 }
