@@ -199,3 +199,19 @@ func (ce *EchoController) DeleteProfilePictureController(c echo.Context) error {
 		"messages": "success delete profile picture user " + username,
 	})
 }
+
+func (ce *EchoController) GetProfilePictureController(c echo.Context) error {
+	username := c.Param("username")
+	file, err := os.Open("../uploads/profile-picture/" + username + ".png")
+	if err != nil {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "error open file",
+		})
+	}
+
+	defer file.Close()
+
+	filebyte, _ := io.ReadAll(file)
+
+	return c.Blob(200, "image/png", filebyte)
+}

@@ -76,6 +76,7 @@ func RegisterGroupAPI(e *echo.Echo, conf config.Config) {
 	api.GET("/profiles/users/:username", cont.GetUserByParamUsernameController)
 	api.GET("/profiles/sosmeds/:username", cont.GetSosmedByParamUsernameController)
 	api.GET("/profiles/sections/:username", cont.GetAllSectionByParamUsernameController)
+	api.GET("/profiles/photos/:username", cont.GetProfilePictureController)
 
 	api.POST("/uploads/profile-picture", cont.UploadProfilePictureController, middleware.JWT([]byte(conf.JWT_KEY)))
 	api.DELETE("/uploads/profile-picture", cont.DeleteProfilePictureController, middleware.JWT([]byte(conf.JWT_KEY)))
