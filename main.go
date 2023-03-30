@@ -3,11 +3,15 @@ package main
 import (
 	conf "github.com/arifwidiasan/api-taut/config"
 	handler "github.com/arifwidiasan/api-taut/controller/handler"
+	"github.com/arifwidiasan/api-taut/helper"
 
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
+	helper.CreateFolder("../uploads")
+	helper.CreateFolder("../uploads/profile-picture")
+	helper.CreateFolder("../uploads/qrcode")
 	config := conf.InitConfiguration()
 	e := echo.New()
 
