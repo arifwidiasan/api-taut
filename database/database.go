@@ -30,7 +30,7 @@ func InitDB(conf config.Config) *gorm.DB {
 
 	admin := DB.Migrator().HasTable(&model.Admin{})
 	if !admin {
-		pass := []byte("admin123")
+		pass := []byte(conf.ADMIN_PASSWORD)
 		hash, _ := bcrypt.GenerateFromPassword(pass, bcrypt.DefaultCost)
 		DB.Migrator().CreateTable(&model.Admin{})
 		DB.Model(&model.Admin{}).Create([]map[string]interface{}{
