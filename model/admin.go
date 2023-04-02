@@ -4,7 +4,7 @@ import "time"
 
 type Admin struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
-	Username  string    `gorm:"uniqueIndex" json:"username"`
+	Username  string    `gorm:"type:varchar(255);uniqueIndex" json:"username"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
 }
