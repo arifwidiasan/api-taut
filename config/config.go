@@ -11,6 +11,7 @@ type Config struct {
 	DB_NAME        string
 	JWT_KEY        string
 	LOC            string
+	ADMIN_PASSWORD string
 }
 
 func InitConfiguration() Config {
@@ -24,6 +25,7 @@ func InitConfiguration() Config {
 		DB_HOST:        GetOrDefault("DB_HOST", "127.0.0.1"),
 		JWT_KEY:        GetOrDefault("JWT_KEY", "inikunci"),
 		LOC:            GetOrDefault("LOC", "Asia%2FJakarta"),
+		ADMIN_PASSWORD: GetOrDefault("ADMIN_PASSWORD", "admin"),
 	}
 }
 
