@@ -132,3 +132,15 @@ func (ce *EchoController) AdminDeleteUserByIDController(c echo.Context) error {
 		"messages": "success delete user",
 	})
 }
+
+func (ce *EchoController) AdminDownloadTemplateController(c echo.Context) error {
+	username := ce.Svc.ClaimToken(c.Get("user").(*jwt.Token))
+	_, err := ce.Svc.GetAdminByUsernameService(username)
+	if err != nil {
+		return c.JSON(403, map[string]interface{}{
+			"messages": "forbidden, not an admin",
+		})
+	}
+
+	return c.Attachment("helper/template-taut.xlsx", "template-taut.xlsx")
+}
