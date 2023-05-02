@@ -12,6 +12,7 @@ type Config struct {
 	JWT_KEY        string
 	LOC            string
 	ADMIN_PASSWORD string
+	QR_PAGE        string
 }
 
 func InitConfiguration() Config {
@@ -26,6 +27,7 @@ func InitConfiguration() Config {
 		JWT_KEY:        GetOrDefault("JWT_KEY", "inikunci"),
 		LOC:            GetOrDefault("LOC", "Asia%2FJakarta"),
 		ADMIN_PASSWORD: GetOrDefault("ADMIN_PASSWORD", "admin"),
+		QR_PAGE:        GetOrDefault("QR_PAGE", "https://www.localhost.com/profile-user/"),
 	}
 }
 
