@@ -12,6 +12,7 @@ func main() {
 	helper.CreateFolder("../uploads")
 	helper.CreateFolder("../uploads/profile-picture")
 	helper.CreateFolder("../uploads/qrcode")
+	helper.CreateFolder("../uploads/excel")
 	config := conf.InitConfiguration()
 	e := echo.New()
 
