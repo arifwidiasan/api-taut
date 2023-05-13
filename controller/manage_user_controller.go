@@ -213,10 +213,10 @@ func (ce *EchoController) AdminInsertBatchUserController(c echo.Context) error {
 
 	var check string
 	for _, col := range cols {
-		check = fmt.Sprintf("%s%s", check, col[0])
+		check = fmt.Sprintf("%s%s", check, col[3])
 	}
 
-	if check != "nonamajabatan/pekerjaanno.telpemailusername" {
+	if check != "nonamajabatan/pekerjaanno.telpemail" {
 		return c.JSON(400, map[string]interface{}{
 			"messages": "template salah",
 		})
@@ -224,22 +224,26 @@ func (ce *EchoController) AdminInsertBatchUserController(c echo.Context) error {
 
 	//insert batch
 	dimension, _ := excel.GetSheetDimension("Sheet1")
-	rangeRow := strings.SplitAfter(dimension, "F")
+	rangeRow := strings.SplitAfter(dimension, "E")
 	rangeRowInt, _ := strconv.Atoi(rangeRow[1])
 
 	//set cell status and password
-	excel.SetCellValue("Sheet1", "G1", "password")
-	excel.SetCellValue("Sheet1", "H1", "status")
-	excel.SetCellValue("Sheet1", "I1", "keterangan")
+	excel.SetCellValue("Sheet1", "F4", "username")
+	excel.SetCellValue("Sheet1", "G4", "password")
+	excel.SetCellValue("Sheet1", "H4", "status")
+	excel.SetCellValue("Sheet1", "I4", "keterangan")
+	j := 1
 
-	for i := 2; i <= rangeRowInt; i++ {
+	for i := 5; i <= rangeRowInt; i++ {
 		//set user
 		user := model.User{}
 		user.Name, _ = excel.GetCellValue("Sheet1", "B"+strconv.Itoa(i))
 		user.Job, _ = excel.GetCellValue("Sheet1", "C"+strconv.Itoa(i))
 		user.PhoneNumber, _ = excel.GetCellValue("Sheet1", "D"+strconv.Itoa(i))
 		user.Email, _ = excel.GetCellValue("Sheet1", "E"+strconv.Itoa(i))
-		user.Username, _ = excel.GetCellValue("Sheet1", "F"+strconv.Itoa(i))
+		namaDepan := strings.Split(user.Name, " ")
+		companyAlias, _ := excel.GetCellValue("Sheet1", "D2")
+		user.Username = fmt.Sprintf("%s%s%d", strings.ToLower(namaDepan[0]), companyAlias, j)
 		user.BornDate = time.Now()
 
 		//insert and set user
@@ -248,8 +252,10 @@ func (ce *EchoController) AdminInsertBatchUserController(c echo.Context) error {
 			excel.SetCellValue("Sheet1", "H"+strconv.Itoa(i), "gagal")
 			excel.SetCellValue("Sheet1", "I"+strconv.Itoa(i), err.Error())
 		} else {
+			excel.SetCellValue("Sheet1", "F"+strconv.Itoa(i), user.Username)
 			excel.SetCellValue("Sheet1", "G"+strconv.Itoa(i), user.Username+"2023")
 			excel.SetCellValue("Sheet1", "H"+strconv.Itoa(i), "sukses")
+			j++
 		}
 	}
 
